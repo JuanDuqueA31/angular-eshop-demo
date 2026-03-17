@@ -1,0 +1,15 @@
+<main>
+    <section *ngIf="product$ | async as product">
+        <div>
+            <figure>
+                <img [src]="product.images[0]" [alt]="product.name">
+            </figure>
+        </div>
+        <div>
+            <h1>{{product.name}}</h1>
+            <div>
+                
+            </div>
+        </div>
+    </section>
+</main>
