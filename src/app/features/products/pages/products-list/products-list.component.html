@@ -1,0 +1,31 @@
+<div class="filters">
+    <input type="text" placeholder="Search products..." [(ngModel)]="searchTerm">
+    <button (click)="search()">Search</button>
+
+    <button (click)="setFilter('all')">All</button>
+    <button (click)="setFilter('expensive')">Expensive</button>
+    <button (click)="setFilter('cheaper')">Cheaper</button>
+</div>
+
+<article *ngFor="let product of (pagedProducts$ | async)">
+    <figure>
+        <img [src]="product.images[0]" [alt]="product.name">
+        <figcaption>{{ product.name }}</figcaption>
+    </figure>
+
+    <p>{{ product.description }}</p>
+
+    <dl>
+        <dt>Category</dt>
+        <dd>{{ product.category }}</dd>
+
+        <dt>Price</dt>
+        <dd>{{ product.price }}</dd>
+    </dl>
+</article>
+
+<app-pagination
+    [currentPage]="currentPage"
+    [totalPages]="5"
+    (pageChange)="changePage($event)">
+</app-pagination>

@@ -1,7 +1,10 @@
 import { map } from 'rxjs/operators';
-import { HttpParams } from '@angular/common/http';
+
 import { ProductsRepository } from '../data-acces/products.repository';
 import { inject, Injectable } from '@angular/core';
+import { Product } from '../models/Product.model';
+import { Observable } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -13,23 +16,21 @@ export class ProductsService {
 
   //addProduct(){}
 
-  getProductList(){
+  getProductList(): Observable<Product[]>{
     return this.productsRepo.getProducts();
   }
 
-  getProductsById(id: HttpParams){
+  getProductsById(id: string): Observable<Product>{
     return this.productsRepo.getProducts(id);
   }
 
-  getExpensiveProducts() {
+  getMostRatedProducts(): Observable<Product[]> {
   return this.productsRepo.getProducts().pipe(
-    map(products => [...products].sort((a, b) => b.price - a.price))
+    map(products => [...products].sort((a, b) => b.rating - a.rating))
   );
-}
+  }
 
-getCheaperProducts() {
-  return this.productsRepo.getProducts().pipe(
-    map(products => [...products].sort((a, b) => a.price - b.price))
-  );
-}
+  searchProducts(search: HttpParams): Observable<Product[]>{
+    return this.productsRepo.searchProducts(search)
+  }
 }

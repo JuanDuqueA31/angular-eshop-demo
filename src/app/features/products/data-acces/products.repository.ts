@@ -1,6 +1,6 @@
+import { Product } from './../models/Product.model';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { Product } from '../models/Product.model';
 import { ApiService } from '../../../core/services/api.service';
 import { inject, Injectable } from "@angular/core";
 import { HttpParams } from '@angular/common/http';
@@ -17,27 +17,37 @@ export class ProductsRepository{
     mapResponseApi(apiResponse: any): Product{
         return {
             id: apiResponse.id,
-            name: apiResponse.name,
+            name: apiResponse.title,
             category: apiResponse.category,
             description: apiResponse.description,
             images: apiResponse.images,
             price: apiResponse.price,
-            stock: apiResponse.stock
+            stock: apiResponse.stock,
+            rating: apiResponse.rating
         }
     }
 
     getProducts(): Observable<Product[]>;
-    getProducts(id: HttpParams): Observable<Product>;
-    getProducts(id?: HttpParams): Observable<Product[] | Product>{
+    getProducts(id: string): Observable<Product>;
+    getProducts(id?: string): Observable<Product[] | Product>{
         if (!id){
-            return this.api.get<{products: any[]}>('products').pipe(map(
+            return this.api.get<{products: Product[]}>('products').pipe(map(
             res => res.products.map(p => this.mapResponseApi(p))
         ))
         }
-        return this.api.get<{product: any}>('product', id).pipe(map(
-            res => this.mapResponseApi(res.product)
+        return this.api.get<Product>(`products/${id}`).pipe(map(
+            res => this.mapResponseApi(res)
         ))
     }
+
+    searchProducts(params: HttpParams): Observable<Product[]> {
+    return this.api
+        .get<{ products: any[] }>('products/search', params)
+        .pipe(
+            map(res => res.products.map(p => this.mapResponseApi(p)))
+        );
+    }
 }
+
 
 

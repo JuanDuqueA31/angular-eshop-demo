@@ -1,0 +1,22 @@
+<article *ngFor="let product of paginatedProducts$ | async">
+    <figure>
+        <img [src]="product.images[0]" [alt]="product.name">
+        <figcaption>{{ product.name }}</figcaption>
+    </figure>
+
+    <p>{{ product.description }}</p>
+
+    <dl>
+        <dt>Category</dt>
+        <dd>{{ product.category }}</dd>
+
+        <dt>Price</dt>
+        <dd>{{ product.price }}</dd>
+    </dl>
+</article>
+
+<app-pagination
+    [currentPage]="currentPage"
+    [totalPages]="(totalPages$ | async) ?? 1"
+    (pageChange)="changePage($event)">
+</app-pagination>

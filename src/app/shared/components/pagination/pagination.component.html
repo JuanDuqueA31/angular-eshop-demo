@@ -1,0 +1,24 @@
+<nav class="pagination">
+
+    <button
+        (click)="prev()"
+        [disabled]="currentPage === 1">
+        Prev
+    </button>
+
+    <button
+        *ngFor="let page of pages"
+        (click)="goTo(page)"
+        [class.active]="page === currentPage">
+
+        {{ page }}
+
+    </button>
+
+    <button
+        (click)="next()"
+        [disabled]="currentPage === totalPages">
+        Next
+    </button>
+
+</nav>
